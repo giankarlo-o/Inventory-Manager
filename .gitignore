@@ -141,3 +141,22 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# --- JetBrains / WebStorm Specific ---
+# This prevents your personal IDE layout and tasks from being pushed
+.idea/
+*.iml
+*.iws
+
+# --- Angular Specific ---
+# Angular generates these during development and builds
+.angular/
+dist/
+.sourcemaps/
+.pnpm-debug.log*
+
+# --- OS Specific (Fedora/Linux) ---
+# Prevents system-specific thumbnails or folder settings from syncing
+.DS_Store
+Thumbs.db
+lost+found/
