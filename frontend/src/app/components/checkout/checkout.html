@@ -1,0 +1,139 @@
+<section class="checkout-page">
+  <header class="checkout-header">
+    <div>
+      <p class="eyebrow">Point of Sale</p>
+      <h1>Checkout</h1>
+      <p>Search products, build a cart, and complete a sale.</p>
+    </div>
+
+    <nav class="checkout-actions">
+      <a routerLink="/">← Back to Dashboard</a>
+    </nav>
+  </header>
+
+  @if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+  }
+
+  @if (successMessage) {
+    <p class="success-message">{{ successMessage }}</p>
+  }
+
+  <section class="checkout-layout">
+    <article class="search-panel">
+      <h2>Add Products</h2>
+
+      <label for="productSearch">Search Inventory</label>
+      <input
+        id="productSearch"
+        name="productSearch"
+        type="search"
+        placeholder="Search by title or description..."
+        [(ngModel)]="searchTerm"
+        autocomplete="off"
+      />
+
+      @if (filteredProducts.length > 0) {
+        <div class="suggestions-list">
+          @for (product of filteredProducts; track product._id) {
+            <button
+              type="button"
+              class="suggestion-item"
+              (click)="addProductToCart(product)"
+            >
+              <span>
+                <strong>{{ product.title }}</strong>
+                <small>{{ product.description }}</small>
+              </span>
+
+              <span class="suggestion-meta">
+                {{ product.price | currency }}
+                ·
+                {{ product.quantityInStock }} in stock
+              </span>
+            </button>
+          }
+        </div>
+      } @else if (searchTerm.trim()) {
+        <p class="empty-search">No matching in-stock products found.</p>
+      }
+    </article>
+
+    <article class="cart-panel">
+      <div class="cart-header">
+        <div>
+          <h2>Cart</h2>
+          <p>{{ cartItemCount }} item{{ cartItemCount === 1 ? '' : 's' }} selected</p>
+        </div>
+
+        <strong>{{ cartTotal | currency }}</strong>
+      </div>
+
+      @if (cartItems.length === 0) {
+        <div class="empty-cart">
+          <h3>Your cart is empty</h3>
+          <p>Search for a product and select it to begin checkout.</p>
+        </div>
+      } @else {
+        <div class="cart-list">
+          @for (item of cartItems; track item.product._id) {
+            <section class="cart-item">
+              <div class="cart-item-info">
+                <h3>{{ item.product.title }}</h3>
+                <p>{{ item.product.price | currency }} each</p>
+                <small>{{ item.product.quantityInStock }} available</small>
+              </div>
+
+              <div class="quantity-controls">
+<!--                <button-->
+<!--                  type="button"-->
+<!--                  aria-label="Decrease quantity"-->
+<!--                  (click)="decreaseQuantity(item)"-->
+<!--                >-->
+<!--                  −-->
+<!--                </button>-->
+
+                <input
+                  type="number"
+                  min="1"
+                  [max]="item.product.quantityInStock"
+                  [ngModel]="item.quantity"
+                  (ngModelChange)="updateQuantity(item, $event)"
+                />
+
+              </div>
+
+              <strong class="line-total">
+                {{ item.product.price * item.quantity | currency }}
+              </strong>
+
+              <button
+                type="button"
+                class="remove-button"
+                (click)="removeItem(item)"
+              >
+                Remove
+              </button>
+            </section>
+          }
+        </div>
+      }
+
+      <div class="checkout-footer">
+        <div>
+          <span>Total</span>
+          <strong>{{ cartTotal | currency }}</strong>
+        </div>
+
+        <button
+          type="button"
+          class="checkout-button"
+          [disabled]="cartItems.length === 0"
+          (click)="checkout()"
+        >
+          Checkout · {{ cartTotal | currency }}
+        </button>
+      </div>
+    </article>
+  </section>
+</section>

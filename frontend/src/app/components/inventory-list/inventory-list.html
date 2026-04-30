@@ -1,12 +1,21 @@
 <section class="inventory-page">
-  <header>
-    <a routerLink="/">← Back to Dashboard</a>
-    <h1>Inventory Manager</h1>
-    <p>Track products, prices, and stock levels.</p>
+  <header class="inventory-navbar">
+    <div>
+      <h1>Inventory Manager</h1>
+      <p>Track products, prices, and stock levels.</p>
+    </div>
+
+    <nav class="inventory-nav-actions">
+      <a routerLink="/">← Back to Dashboard</a>
+      <a routerLink="/checkout">Checkout</a>
+    </nav>
   </header>
 
   <app-product-form
     [productToEdit]="selectedProduct"
+    [isExpanded]="isProductFormExpanded"
+    (expandForm)="expandProductForm()"
+    (collapseForm)="collapseProductForm()"
     (productSaved)="handleProductSaved()"
     (cancelEdit)="clearSelection()"
   />

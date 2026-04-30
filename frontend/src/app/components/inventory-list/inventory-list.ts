@@ -16,6 +16,7 @@ export class InventoryList implements OnInit {
   products: Product[] = [];
   selectedProduct: Product | null = null;
   productPendingDelete: Product | null = null;
+  isProductFormExpanded = false;
   errorMessage = '';
 
   constructor(private api: Api) {}
@@ -36,12 +37,22 @@ export class InventoryList implements OnInit {
     });
   }
 
+  expandProductForm(): void {
+    this.isProductFormExpanded = true;
+  }
+
+  collapseProductForm(): void {
+    this.isProductFormExpanded = false;
+  }
+
   selectProduct(product: Product): void {
     this.selectedProduct = { ...product };
+    this.expandProductForm();
   }
 
   clearSelection(): void {
     this.selectedProduct = null;
+    this.collapseProductForm();
   }
 
   confirmDelete(product: Product): void {

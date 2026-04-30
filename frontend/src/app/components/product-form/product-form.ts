@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Api } from '../../services/api';
 import { Product } from '../../models/product';
@@ -12,6 +12,9 @@ import { Product } from '../../models/product';
 })
 export class ProductForm implements OnChanges {
   @Input() productToEdit: Product | null = null;
+  @Input() isExpanded = false;
+  @Output() expandForm = new EventEmitter<void>();
+  @Output() collapseForm = new EventEmitter<void>();
   @Output() productSaved = new EventEmitter<void>();
   @Output() cancelEdit = new EventEmitter<void>();
 
@@ -20,11 +23,26 @@ export class ProductForm implements OnChanges {
 
   constructor(private api: Api) {}
 
+  @HostListener('window:scroll')
+  handleWindowScroll(): void {
+    if (this.isExpanded && this.isDefaultProduct()) {
+      this.collapseForm.emit();
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['productToEdit']) {
       this.formProduct = this.productToEdit ? { ...this.productToEdit } : this.getEmptyProduct();
       this.errorMessage = '';
+
+      if (this.productToEdit) {
+        this.expandForm.emit();
+      }
     }
+  }
+
+  openForm(): void {
+    this.expandForm.emit();
   }
 
   saveProduct(): void {
@@ -61,6 +79,16 @@ export class ProductForm implements OnChanges {
   cancel(): void {
     this.resetForm();
     this.cancelEdit.emit();
+  }
+
+  private isDefaultProduct(): boolean {
+    return (
+      !this.formProduct._id &&
+      this.formProduct.title.trim() === '' &&
+      this.formProduct.description.trim() === '' &&
+      Number(this.formProduct.price) === 0 &&
+      Number(this.formProduct.quantityInStock) === 0
+    );
   }
 
   private getEmptyProduct(): Product {

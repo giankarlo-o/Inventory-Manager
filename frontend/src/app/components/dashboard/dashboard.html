@@ -7,8 +7,9 @@
     </div>
 
     <nav class="dashboard-actions">
-      <a routerLink="/inventory" class="primary-link">View Inventory</a>
+      <a routerLink="/inventory" class="secondary-link">View Inventory</a>
       <a routerLink="/transactions" class="secondary-link">View Transactions</a>
+      <a routerLink="/checkout" class="primary-link">Checkout</a>
     </nav>
   </header>
 
@@ -40,39 +41,6 @@
     <article class="panel">
       <div class="panel-header">
         <div>
-          <h2>Low Inventory</h2>
-          <p>Products that may need restocking soon.</p>
-        </div>
-
-        <a routerLink="/inventory">Manage Inventory</a>
-      </div>
-
-      @if (lowInventoryProducts.length === 0) {
-        <div class="empty-state">
-          <h3>No low inventory alerts</h3>
-          <p>All products are currently above the low inventory threshold.</p>
-        </div>
-      } @else {
-        <div class="low-stock-list">
-          @for (product of lowInventoryProducts; track product._id) {
-            <div class="low-stock-item">
-              <div>
-                <h3>{{ product.title }}</h3>
-                <p>{{ product.description }}</p>
-              </div>
-
-              <span class="stock-count">
-                {{ product.quantityInStock }} left
-              </span>
-            </div>
-          }
-        </div>
-      }
-    </article>
-
-    <article class="panel">
-      <div class="panel-header">
-        <div>
           <h2>Recent Transactions</h2>
           <p>Five most recent completed sales.</p>
         </div>
@@ -99,6 +67,39 @@
               </div>
 
               <strong>{{ transaction.totalAmount | currency }}</strong>
+            </div>
+          }
+        </div>
+      }
+    </article>
+
+    <article class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>Low Inventory</h2>
+          <p>Products that may need restocking soon.</p>
+        </div>
+
+        <a routerLink="/inventory">Manage Inventory</a>
+      </div>
+
+      @if (lowInventoryProducts.length === 0) {
+        <div class="empty-state">
+          <h3>No low inventory alerts</h3>
+          <p>All products are currently above the low inventory threshold.</p>
+        </div>
+      } @else {
+        <div class="low-stock-list">
+          @for (product of lowInventoryProducts; track product._id) {
+            <div class="low-stock-item">
+              <div>
+                <h3>{{ product.title }}</h3>
+                <p>{{ product.description }}</p>
+              </div>
+
+              <span class="stock-count">
+                {{ product.quantityInStock }} left
+              </span>
             </div>
           }
         </div>
