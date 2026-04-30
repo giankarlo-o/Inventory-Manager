@@ -1,0 +1,87 @@
+<section class="inventory-page">
+  <header>
+    <a routerLink="/">← Back to Dashboard</a>
+    <h1>Inventory Manager</h1>
+    <p>Track products, prices, and stock levels.</p>
+  </header>
+
+  <app-product-form
+    [productToEdit]="selectedProduct"
+    (productSaved)="handleProductSaved()"
+    (cancelEdit)="clearSelection()"
+  />
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <section class="inventory-list">
+    <h2>Products</h2>
+
+    @if (products.length === 0) {
+      <p>No products found. Add your first product above.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (product of products; track product._id) {
+            <tr>
+              <td>{{ product.title }}</td>
+              <td>{{ product.description }}</td>
+              <td>{{ product.price | currency }}</td>
+              <td>{{ product.quantityInStock }}</td>
+              <td>
+                <button type="button" class="edit-button" (click)="selectProduct(product)">
+                  Edit
+                </button>
+                <button type="button" class="delete-button" (click)="confirmDelete(product)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </section>
+
+  @if (productPendingDelete) {
+    <div class="modal-backdrop">
+      <section class="delete-modal" role="dialog" aria-modal="true">
+        <h2>Delete Product?</h2>
+
+        <p>
+          Are you sure you want to delete
+          <strong>{{ productPendingDelete.title }}</strong>?
+        </p>
+
+        <p class="warning-text">
+          This action cannot be undone.
+        </p>
+
+        <div class="modal-actions">
+          <button type="button" class="cancel-delete-button" (click)="cancelDelete()">
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            class="confirm-delete-button"
+            (click)="deleteProduct(productPendingDelete._id)"
+          >
+            Yes, Delete
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+</section>

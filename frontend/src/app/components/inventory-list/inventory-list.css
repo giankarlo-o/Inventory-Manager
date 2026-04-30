@@ -1,0 +1,256 @@
+.inventory-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #3A3A3A;
+}
+
+.inventory-page header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #AFE3D1, #F2F4AC);
+  border: 1px solid rgba(58, 58, 58, 0.12);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 24px rgba(58, 58, 58, 0.08);
+}
+
+.inventory-page header a {
+  align-self: flex-start;
+  color: #3A3A3A;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(58, 58, 58, 0.12);
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.inventory-page header a:hover {
+  background: #FFFFFF;
+}
+
+.inventory-page h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  color: #3A3A3A;
+}
+
+.inventory-page header p {
+  margin: 0;
+  color: rgba(58, 58, 58, 0.75);
+}
+
+.error,
+.error-message {
+  background: #F2F4AC;
+  color: #3A3A3A;
+  border: 1px solid #A981C7;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.inventory-list {
+  background: #FFFFFF;
+  border: 1px solid rgba(58, 58, 58, 0.12);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 24px rgba(58, 58, 58, 0.06);
+}
+
+.inventory-list h2 {
+  margin: 0 0 1rem;
+  color: #3A3A3A;
+  font-size: 1.75rem;
+}
+
+.inventory-list > p {
+  background: #DBF0B7;
+  border: 1px dashed rgba(58, 58, 58, 0.25);
+  border-radius: 0.9rem;
+  padding: 1.25rem;
+  color: #3A3A3A;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 0.9rem;
+}
+
+thead {
+  background: #3A3A3A;
+  color: #FFFFFF;
+}
+
+th {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(58, 58, 58, 0.1);
+  color: #3A3A3A;
+  vertical-align: middle;
+}
+
+tbody tr {
+  background: #FFFFFF;
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(175, 227, 209, 0.22);
+}
+
+tbody tr:hover {
+  background: rgba(219, 240, 183, 0.45);
+}
+
+td:nth-child(3) {
+  font-weight: 800;
+  color: #3A3A3A;
+}
+
+td:nth-child(4) {
+  font-weight: 800;
+}
+
+td:last-child {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+button {
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.85rem;
+  cursor: pointer;
+  font-weight: 800;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(58, 58, 58, 0.12);
+}
+
+.edit-button {
+  background: #A981C7;
+  color: #FFFFFF;
+}
+
+.edit-button:hover {
+  background: #956bb8;
+}
+
+.delete-button,
+.confirm-delete-button {
+  background: #dc2626;
+  color: #FFFFFF;
+}
+
+.delete-button:hover,
+.confirm-delete-button:hover {
+  background: #b91c1c;
+}
+
+.cancel-delete-button {
+  background: #DBF0B7;
+  color: #3A3A3A;
+}
+
+.cancel-delete-button:hover {
+  background: #c9e89d;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(58, 58, 58, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.delete-modal {
+  width: min(100%, 420px);
+  background: #FFFFFF;
+  border: 1px solid rgba(58, 58, 58, 0.12);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 24px 60px rgba(58, 58, 58, 0.28);
+}
+
+.delete-modal h2 {
+  margin: 0 0 0.75rem;
+  color: #3A3A3A;
+}
+
+.delete-modal p {
+  color: rgba(58, 58, 58, 0.75);
+  line-height: 1.5;
+}
+
+.warning-text {
+  background: #fee2e2;
+  color: #991b1b !important;
+  border: 1px solid #fecaca;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  font-weight: 800;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+app-product-form {
+  display: block;
+  margin-bottom: 1.5rem;
+  background: #FFFFFF;
+  border: 1px solid rgba(58, 58, 58, 0.12);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 24px rgba(58, 58, 58, 0.06);
+}
+
+@media (max-width: 850px) {
+  .inventory-page {
+    padding: 1rem;
+  }
+
+  .inventory-page h1 {
+    font-size: 2rem;
+  }
+
+  .inventory-list {
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 720px;
+  }
+
+  td:last-child {
+    min-width: 150px;
+  }
+}

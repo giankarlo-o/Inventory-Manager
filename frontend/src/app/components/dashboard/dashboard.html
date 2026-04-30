@@ -1,0 +1,108 @@
+<section class="dashboard-page">
+  <header class="dashboard-header">
+    <div>
+      <p class="eyebrow">Daily Overview</p>
+      <h1>Inventory Dashboard</h1>
+      <p>Monitor sales activity, earnings, recent transactions, and low inventory alerts.</p>
+    </div>
+
+    <nav class="dashboard-actions">
+      <a routerLink="/inventory" class="primary-link">View Inventory</a>
+      <a routerLink="/transactions" class="secondary-link">View Transactions</a>
+    </nav>
+  </header>
+
+  @if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+  }
+
+  <section class="summary-grid">
+    <article class="summary-card">
+      <span class="summary-label">Completed Transactions</span>
+      <strong>{{ completedTransactionsToday }}</strong>
+      <p>Transactions completed today</p>
+    </article>
+
+    <article class="summary-card">
+      <span class="summary-label">Total Earnings</span>
+      <strong>{{ totalEarningsToday | currency }}</strong>
+      <p>Sum of today's completed sales</p>
+    </article>
+
+    <article class="summary-card warning">
+      <span class="summary-label">Low Inventory Alerts</span>
+      <strong>{{ lowInventoryProducts.length }}</strong>
+      <p>Products at or below {{ lowInventoryThreshold }} units</p>
+    </article>
+  </section>
+
+  <section class="dashboard-content">
+    <article class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>Low Inventory</h2>
+          <p>Products that may need restocking soon.</p>
+        </div>
+
+        <a routerLink="/inventory">Manage Inventory</a>
+      </div>
+
+      @if (lowInventoryProducts.length === 0) {
+        <div class="empty-state">
+          <h3>No low inventory alerts</h3>
+          <p>All products are currently above the low inventory threshold.</p>
+        </div>
+      } @else {
+        <div class="low-stock-list">
+          @for (product of lowInventoryProducts; track product._id) {
+            <div class="low-stock-item">
+              <div>
+                <h3>{{ product.title }}</h3>
+                <p>{{ product.description }}</p>
+              </div>
+
+              <span class="stock-count">
+                {{ product.quantityInStock }} left
+              </span>
+            </div>
+          }
+        </div>
+      }
+    </article>
+
+    <article class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>Recent Transactions</h2>
+          <p>Five most recent completed sales.</p>
+        </div>
+
+        <a routerLink="/transactions">View All</a>
+      </div>
+
+      @if (recentTransactions.length === 0) {
+        <div class="empty-state">
+          <h3>No transactions yet</h3>
+          <p>Completed sales will appear here.</p>
+        </div>
+      } @else {
+        <div class="transaction-list">
+          @for (transaction of recentTransactions; track transaction.id) {
+            <div class="transaction-item">
+              <div>
+                <h3>{{ transaction.id }}</h3>
+                <p>
+                  {{ transaction.customerName }} ·
+                  {{ transaction.itemCount }} item{{ transaction.itemCount === 1 ? '' : 's' }}
+                </p>
+                <small>{{ transaction.completedAt | date: 'short' }}</small>
+              </div>
+
+              <strong>{{ transaction.totalAmount | currency }}</strong>
+            </div>
+          }
+        </div>
+      }
+    </article>
+  </section>
+</section>
