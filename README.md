@@ -1,4 +1,3 @@
-
 # Inventory Manager (POS)
 
 ## Project Overview
@@ -13,7 +12,7 @@ The application is built with the MEAN stack, using an Angular frontend, a Node.
 - Provide a simple POS-style foundation for managing products and carts.
 - Allow users to create, view, update, and delete product records.
 - Store product and cart information reliably in MongoDB.
-- Support future features such as checkout, sales tracking, and reporting.
+- Support future features such as sales tracking and reporting.
 
 ## Core Features
 
@@ -48,6 +47,14 @@ The application is built with the MEAN stack, using an Angular frontend, a Node.
   - Validate that cart quantity does not exceed available inventory.
   - Store the product price at the time the item is added to the cart.
   - Calculate item totals and full cart totals for display.
+  - **Checkout Process**: Finalize purchases, create transaction records, and automatically deduct inventory.
+
+- **Transaction Management**
+  - View a comprehensive list of all past transactions.
+  - See total sales amount across all transactions.
+  - Track the total number of items sold.
+  - Expand individual transactions to view details of purchased items.
+  - Each transaction records the items purchased, quantities, and total amount.
 
 - **MongoDB Product Lookup**
   - Cart items store a product ID.
@@ -98,6 +105,13 @@ The application is built with the MEAN stack, using an Angular frontend, a Node.
 | `DELETE` | `/api/carts/:cartId/items/:productId` | Remove a product from a cart |
 | `DELETE` | `/api/carts/:cartId/items` | Clear all items from a cart |
 
+### Transaction Routes
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/transactions` | Get all transactions |
+| `POST` | `/api/transactions` | Create a new transaction (checkout) |
+
 ## Product Data Model
 
 Each inventory product stores the following information:
@@ -128,7 +142,15 @@ Each inventory product stores the following information:
 
 Example product document:
 
-`json { "_id": "ObjectId", "title": "Coffee Beans", "description": "One pound bag of medium roast coffee beans", "price": 12.99, "quantityInStock": 25, "createdAt": "Date", "updatedAt": "Date" }`
+`json { 
+  "_id": "ObjectId", 
+  "title": "Coffee Beans", 
+  "description": "One pound bag of medium roast coffee beans", 
+  "price": 12.99, 
+  "quantityInStock": 25, 
+  "createdAt": "Date", 
+  "updatedAt": "Date" 
+}`
 
 ## Cart Data Model
 
@@ -159,7 +181,56 @@ Each cart item includes:
 
 Example cart document:
 
-`json { "_id": "ObjectId", "items": , "createdAt": "Date", "updatedAt": "Date" }`
+`json { 
+  "_id": "ObjectId", 
+  "items": "ObjectArray", 
+  "createdAt": "Date", 
+  "updatedAt": "Date" 
+}`
+
+## Transaction Data Model
+
+Each transaction records a completed sale, including the items purchased and the total amount.
+
+- **Items**
+  - An array of products included in the transaction.
+
+- **Product ID**
+  - References the `_id` of the product that was purchased.
+
+- **Quantity Purchased**
+  - The number of units of the product sold in this transaction.
+
+- **Price at Purchase**
+  - The price of the product at the time of the transaction.
+
+- **Transaction Date**
+  - Timestamp indicating when the transaction occurred.
+
+- **Total Amount**
+  - The total monetary value of the transaction.
+
+Example transaction document:
+
+`json { 
+  "_id": "ObjectId", 
+  "items": [ 
+    { 
+      "productId": "ObjectId", 
+      "quantityPurchased": 2, 
+      "priceAtPurchase": 12.99 
+    }, 
+    { 
+      "productId": "ObjectId", 
+      "quantityPurchased": 1, 
+      "priceAtPurchase": 5.50 
+    } 
+  ], 
+  "transactionDate": "Date", 
+  "totalAmount": 31.48, 
+  "createdAt": "Date", 
+  "updatedAt": "Date" 
+}`
 
 ## MongoDB Concepts Demonstrated
 
@@ -176,13 +247,12 @@ This project uses the native MongoDB driver to demonstrate direct database knowl
 - Converting string IDs into MongoDB `ObjectId` values.
 - Validating IDs with `ObjectId.isValid`.
 - Joining cart items with product data using aggregation and `$lookup`.
+- Performing bulk writes for inventory deduction during checkout.
 
 ## Planned Improvements
 
 Future updates may include:
 
-- Checkout system that automatically deducts inventory.
-- Transaction history for daily sales.
 - Sales reports and revenue summaries.
 - Product search and filtering tools.
 - Low-stock alerts.
@@ -201,8 +271,9 @@ This project demonstrates foundational full-stack development skills, including:
 - Performing CRUD operations with the MongoDB native driver.
 - Validating request data before saving it to the database.
 - Structuring a scalable Node.js and Express backend.
-- Planning for future POS and inventory management features.
+- Implementing a complete checkout flow with inventory deduction.
+- Developing transaction history and management features.
 
 ## Summary
 
-Inventory Manager is a practical inventory and POS-style application built for small-scale business needs. It provides the core tools needed to manage product data, create carts, validate available stock, and calculate cart totals while leaving room for future checkout, reporting, and sales-tracking features.
+Inventory Manager is a practical inventory and POS-style application built for small-scale business needs. It provides the core tools needed to manage product data, create carts, validate available stock, calculate cart totals, process checkouts, and track transaction history. It also leaves room for future reporting and sales-tracking features.
