@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Api, Transaction } from '../../services/api';
+import { Api } from '../../services/api';
+import { Transaction, TransactionItem } from '../../models/transaction';
 
 @Component({
   selector: 'app-transactions',
@@ -22,16 +23,16 @@ export class Transactions implements OnInit {
   }
 
   get totalTransactionAmount(): number {
-    return this.transactions.reduce((total, transaction) => {
+    return this.transactions.reduce((total: number, transaction: Transaction) => {
       return total + transaction.totalAmount;
     }, 0);
   }
 
   get totalItemsSold(): number {
-    return this.transactions.reduce((transactionTotal, transaction) => {
+    return this.transactions.reduce((transactionTotal: number, transaction: Transaction) => {
       return (
         transactionTotal +
-        transaction.items.reduce((itemTotal, item) => {
+        transaction.items.reduce((itemTotal: number, item: TransactionItem) => {
           return itemTotal + item.quantityPurchased;
         }, 0)
       );
@@ -51,7 +52,7 @@ export class Transactions implements OnInit {
   }
 
   getTransactionItemCount(transaction: Transaction): number {
-    return transaction.items.reduce((total, item) => {
+    return transaction.items.reduce((total: number, item: TransactionItem) => {
       return total + item.quantityPurchased;
     }, 0);
   }

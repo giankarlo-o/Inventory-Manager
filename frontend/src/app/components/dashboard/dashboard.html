@@ -55,18 +55,24 @@
         </div>
       } @else {
         <div class="transaction-list">
-          @for (transaction of recentTransactions; track transaction.id) {
+          @for (transaction of recentTransactions; track transaction._id) {
             <div class="transaction-item">
               <div>
-                <h3>{{ transaction.id }}</h3>
-                <p>
-                  {{ transaction.customerName }} ·
-                  {{ transaction.itemCount }} item{{ transaction.itemCount === 1 ? '' : 's' }}
-                </p>
-                <small>{{ transaction.completedAt | date: 'short' }}</small>
+                <h3>Trans. #{{ transaction._id?.slice(-6)?.toUpperCase() }}</h3>
+                <small>{{ transaction.transactionDate | date: 'short' }}</small>
               </div>
 
-              <strong>{{ transaction.totalAmount | currency }}</strong>
+              <table>
+                <tr>
+                  <strong>{{ transaction.totalAmount | currency }}</strong>
+                </tr>
+                <tr>
+                  <small>
+                    {{ getTransactionItemCount(transaction) }}
+                    item{{ getTransactionItemCount(transaction) === 1 ? '' : 's' }}
+                  </small>
+                </tr>
+              </table>
             </div>
           }
         </div>

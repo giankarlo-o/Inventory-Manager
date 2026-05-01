@@ -86,82 +86,82 @@ module.exports = {
     createTransactionUpdate
 };
 
-const reduceInventoryForTransaction = async (db, items) => {
-    for (const item of items) {
-        const result = await db.collection(PRODUCT_COLLECTION).updateOne(
-            {
-                _id: new ObjectId(item.product._id),
-                quantityInStock: {
-                    $gte: item.quantityPurchased
-                }
-            },
-            {
-                $inc: {
-                    quantityInStock: -item.quantityPurchased
-                },
-                $set: {
-                    updatedAt: new Date()
-                }
-            }
-        );
-
-        if (result.matchedCount === 0) {
-            throw new Error(`Not enough ${item.product.title} available in stock`);
-        }
-    }
-};
-
-const createTransaction = async (req, res) => {
-    let insertedTransactionId = null;
-
-    try {
-        const db = getDB();
-
-        const transactionItems = await buildTransactionItemsFromRequest(db, req.body.items || []);
-
-        const transactionData = {
-            items: transactionItems,
-            transactionDate: req.body.transactionDate
-        };
-
-        const errors = validateTransaction(transactionData);
-
-        if (errors.length > 0) {
-            return res.status(400).json({
-                success: false,
-                message: 'Invalid transaction data',
-                errors
-            });
-        }
-
-        const transaction = createTransactionDocument(transactionData);
-
-        const result = await db.collection(TRANSACTION_COLLECTION).insertOne(transaction);
-        insertedTransactionId = result.insertedId;
-
-        await reduceInventoryForTransaction(db, transaction.items);
-
-        res.status(201).json({
-            success: true,
-            message: 'Transaction created successfully',
-            data: {
-                _id: result.insertedId,
-                ...transaction
-            }
-        });
-    } catch (error) {
-        if (insertedTransactionId) {
-            const db = getDB();
-
-            await db.collection(TRANSACTION_COLLECTION).deleteOne({
-                _id: insertedTransactionId
-            });
-        }
-
-        res.status(400).json({
-            success: false,
-            message: 'Failed to create transaction',
-            error: error.message
-        });
-    }
-};
+// const reduceInventoryForTransaction = async (db, items) => {
+//     for (const item of items) {
+//         const result = await db.collection(PRODUCT_COLLECTION).updateOne(
+//             {
+//                 _id: new ObjectId(item.product._id),
+//                 quantityInStock: {
+//                     $gte: item.quantityPurchased
+//                 }
+//             },
+//             {
+//                 $inc: {
+//                     quantityInStock: -item.quantityPurchased
+//                 },
+//                 $set: {
+//                     updatedAt: new Date()
+//                 }
+//             }
+//         );
+//
+//         if (result.matchedCount === 0) {
+//             throw new Error(`Not enough ${item.product.title} available in stock`);
+//         }
+//     }
+// };
+//
+// const createTransaction = async (req, res) => {
+//     let insertedTransactionId = null;
+//
+//     try {
+//         const db = getDB();
+//
+//         const transactionItems = await buildTransactionItemsFromRequest(db, req.body.items || []);
+//
+//         const transactionData = {
+//             items: transactionItems,
+//             transactionDate: req.body.transactionDate
+//         };
+//
+//         const errors = validateTransaction(transactionData);
+//
+//         if (errors.length > 0) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: 'Invalid transaction data',
+//                 errors
+//             });
+//         }
+//
+//         const transaction = createTransactionDocument(transactionData);
+//
+//         const result = await db.collection(TRANSACTION_COLLECTION).insertOne(transaction);
+//         insertedTransactionId = result.insertedId;
+//
+//         await reduceInventoryForTransaction(db, transaction.items);
+//
+//         res.status(201).json({
+//             success: true,
+//             message: 'Transaction created successfully',
+//             data: {
+//                 _id: result.insertedId,
+//                 ...transaction
+//             }
+//         });
+//     } catch (error) {
+//         if (insertedTransactionId) {
+//             const db = getDB();
+//
+//             await db.collection(TRANSACTION_COLLECTION).deleteOne({
+//                 _id: insertedTransactionId
+//             });
+//         }
+//
+//         res.status(400).json({
+//             success: false,
+//             message: 'Failed to create transaction',
+//             error: error.message
+//         });
+//     }
+// };

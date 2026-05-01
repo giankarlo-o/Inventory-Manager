@@ -53,12 +53,21 @@
             >
               <span>
                 <strong>{{ getTransactionLabel(transaction) }}</strong>
-                <small>{{ transaction.transactionDate | date: 'medium' }}</small>
+                <small>{{ transaction.transactionDate | date: 'short' }}</small>
               </span>
 
               <span class="transaction-meta">
-                <span>{{ getTransactionItemCount(transaction) }} item{{ getTransactionItemCount(transaction) === 1 ? '' : 's' }}</span>
-                <strong>{{ transaction.totalAmount | currency }}</strong>
+                <table>
+                  <tr>
+                    <strong>{{ transaction.totalAmount | currency }}</strong>
+                  </tr>
+                  <tr>
+                    <small>{{ getTransactionItemCount(transaction) }} item{{
+                        getTransactionItemCount(transaction)
+                    ===
+                    1 ? '' : 's' }}</small>
+                  </tr>
+                </table>
               </span>
             </button>
 
